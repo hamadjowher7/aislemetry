@@ -1,0 +1,47 @@
+export const demoLabel = '<span class="demo-label">ILLUSTRATIVE DEMO</span>';
+export const arrow = '<span aria-hidden="true">↗</span>';
+export function link(label, url, secondary = false) { return `<a class="button${secondary ? ' button-outline' : ''}" href="${url}">${label} ${arrow}</a>`; }
+export function sectionHead(number, label, title, description = '') { return `<div class="section-kicker"><span>${number} / ${label}</span><span>AISLEMETRY / PRODUCT PREVIEW</span></div><div class="split-heading"><h2>${title}</h2>${description ? `<p>${description}</p>` : ''}</div>`; }
+export function metric(label, value, note = '') { return `<div class="metric"><span>${label}</span><strong>${value}</strong><small>${note}</small></div>`; }
+
+export function shelf({ branded = false, expected = false, annotations = true, id = 'shelf', exception = true } = {}) {
+  const names = branded ? ['A·01', 'A·02', 'A·03', 'A·04'] : ['A·01', 'B·01', 'C·01', 'D·01', 'OTHER'];
+  return `<div class="shelf-scene ${branded ? 'branded-scene' : 'category-scene'} ${annotations ? 'with-annotations' : ''}" id="${id}" role="group" aria-label="Original fictional ${branded ? 'branded display' : 'beverage category'} illustration${expected ? ', planned layout' : ', observed layout'}"><div class="shelf-sign"><span>${branded ? 'BRAND A / PREMIUM BAY' : 'BEVERAGES / FULL CATEGORY'}</span><span>ORIGINAL DEMO ART</span></div><div class="shelf-products">${Array.from({ length: 12 }, (_, index) => {
+    const brand = branded ? index % 4 : [0, 1, 2, 0, 3, 1, 2, 3, 0, 1, 4, 0][index];
+    const missing = branded && !expected && exception && exception !== 'Placement / facing deviation' && index === 2;
+    const moved = branded && !expected && exception && exception !== 'Missing priority SKU' && (index === 7 || exception === 'Placement / facing deviation' && index === 8);
+    return `<button type="button" class="product-slot product-${branded ? 0 : brand} ${missing ? 'missing' : ''} ${moved ? 'moved' : ''}" data-sku="${index}" aria-label="${missing ? 'Missing priority SKU A·03' : `${names[brand]} fictional product slot ${index + 1}${moved ? ', placement deviation' : ''}`}"><span class="detection-label">${missing ? 'MISSING' : moved ? 'MOVED' : names[brand]}</span><span class="pack"><span class="pack-brand">${branded ? 'FIELD' : ['FIELD', 'MESA', 'NORI', 'SOMA', '?'][brand]}</span><span class="pack-shape"></span><span class="pack-caption">${missing ? 'EMPTY SLOT' : ['CITRUS', 'ORIGINAL', 'BERRY', 'LIGHT'][index % 4]}</span></span><span class="price-tag">${missing ? 'Review' : `₹${40 + index % 3 * 2}`}</span></button>`;
+  }).join('')}</div><div class="shelf-scene-footer"><span>${expected ? 'EXPECTED / 12 POSITIONS' : 'OBSERVED / FICTIONAL SCENE'}</span><span>${branded ? 'CUSTOMER-RESTRICTED' : 'CATEGORY BOUNDARY SHOWN'}</span></div></div>`;
+}
+
+export function shareChart(shares = [31, 25, 20, 14, 10], interactive = false) {
+  return `<div class="share-chart" aria-label="Visible beverage facings by fictional brand">${shares.map((share, index) => `<${interactive ? 'button' : 'div'} class="share-row" ${interactive ? `data-brand="${['Brand A', 'Brand B', 'Brand C', 'Brand D', 'Other / uncertain'][index]}"` : ''}><span>${['Brand A', 'Brand B', 'Brand C', 'Brand D', 'Other / uncertain'][index]}</span><span class="share-track"><i class="series-${index}" style="width:${share}%"></i></span><strong>${Number(share).toFixed(1).replace('.0', '')}%</strong></${interactive ? 'button' : 'div'}>`).join('')}</div>`;
+}
+
+export function trendChart(values = [35, 34, 32, 31], labels = ['29 Sep', '06 Oct', '13 Oct', '20 Oct']) {
+  const horizontal = index => 25 + index * (330 / Math.max(1, values.length - 1));
+  const points = values.map((value, index) => `${horizontal(index)},${140 - value * 2.4}`).join(' ');
+  return `<figure class="trend-figure"><svg viewBox="0 0 390 160" role="img" aria-label="Matched panel trend: ${values.map(value => `${Number(value).toFixed(1)} percent`).join(', ')} across ${values.length} selected weekly visits"><path d="M20 40h350M20 80h350M20 120h350" stroke="#dce2d6" fill="none"/><polyline points="${points}" fill="none" stroke="#315b43" stroke-width="3"/>${values.map((value, index) => `<circle cx="${horizontal(index)}" cy="${140 - value * 2.4}" r="4" fill="#315b43"/><text x="${horizontal(index)}" y="${125 - value * 2.4}" text-anchor="middle">${Number(value).toFixed(1)}%</text><text x="${horizontal(index)}" y="150" text-anchor="middle">${labels[index]}</text>`).join('')}</svg><figcaption>Matched assessable stores only · pinned 2026 sample dates · visible facings, not sales.</figcaption></figure>`;
+}
+
+export function coverageMap(interactive = true, agency = false) {
+  return `<div class="coverage-map" aria-label="Schematic Bengaluru sample zones, not actual store locations"><div class="map-grid" aria-hidden="true"></div><span class="map-caption">BENGALURU / SCHEMATIC</span>${['North', 'West', 'East', 'South'].map((zone, index) => `<${interactive ? 'button' : 'div'} class="map-cluster cluster-${index}" ${interactive ? `data-map-zone="${zone}"` : ''}><span>${zone}</span><strong>${agency ? [40, 25, 30, 25][index] : 30}</strong><small>${agency ? 'sample assignments' : 'sampled stores'}</small></${interactive ? 'button' : 'div'}>`).join('')}<span class="map-footer">Synthetic layout · no actual partner addresses</span></div>`;
+}
+
+export function pipeline() {
+  return `<div class="rights-pipeline"><div class="pipeline-input"><span class="flow-icon" aria-hidden="true">▧</span><h3>One authorized visit</h3><p>Complete category photos.<br>Store context. Capture checks.</p></div><span class="flow-arrow" aria-hidden="true">→</span><div class="rights-gate"><span class="flow-icon" aria-hidden="true">◇</span><h3>Usage-rights gate</h3><p>Store permission + contributor rights + customer contract.</p><strong>No valid reuse rights? No shared output.</strong></div><span class="flow-arrow" aria-hidden="true">→</span><div class="pipeline-outputs"><div><span>A</span>Brand A · shelf visibility</div><div><span>B</span>Brand B · observed pricing</div><div><span>C</span>Category · matched-panel trend</div><small>Derived views only where permitted. No unrestricted raw-photo resale.</small></div></div>`;
+}
+
+export function phone(screen = 'discover') {
+  const screens = {
+    discover: `<div class="phone-greeting">Good morning.<br><strong>Look around. Learn more.</strong></div><div class="phone-map"><span>DEMO BENGALURU</span><i>1</i><i>2</i><i>3</i></div><div class="phone-task"><small>BEVERAGES · 1.2 KM (DEMO)</small><strong>Capture the whole category.</strong><span>8–12 min <b>₹80</b></span></div><div class="phone-task"><small>SNACKS · 2.4 KM (DEMO)</small><strong>Check what’s on the shelf.</strong><span>5–8 min <b>₹55</b></span></div>`,
+    details: `<div class="phone-greeting"><small>TASK-201 / SAMPLE</small><strong>Beverage shelf check</strong></div><div class="phone-reward">₹80 <span>illustrative reward</span></div><ul class="phone-checks"><li>4 full-category photos</li><li>Readable shelf labels</li><li>Store permission required</li><li>8–12 min, excluding travel</li></ul><div class="phone-notice">If permission is refused,<br>decline and report. Never insist.</div>`,
+    capture: `<div class="phone-greeting"><small>CAPTURE PREVIEW</small><strong>Keep the whole shelf in view.</strong></div><div class="phone-capture"><div class="mini-packs" aria-hidden="true">${'<i></i>'.repeat(12)}</div><span>FRAME THE CATEGORY</span></div><div class="phone-task"><strong>2 of 4 sample frames</strong><span>Check glare and readable labels.</span></div><div class="phone-notice">Avoid faces, private screens,<br>bills and restricted areas.</div>`,
+    wallet: `<div class="phone-greeting"><small>SAMPLE WALLET</small><strong>Your work. A clear record.</strong></div><div class="phone-reward">₹180 <span>fictional paid balance</span></div><div class="wallet-line"><span>Beverage check</span><b>Under review</b></div><div class="wallet-line"><span>Bay audit · ₹120</span><b>Approved</b></div><div class="wallet-line"><span>Repeat visit · ₹100</span><b>Paid (demo)</b></div><div class="phone-notice">No live work or real payments.<br>Terms must be set before launch.</div>`
+  };
+  return `<div class="phone"><div class="phone-status"><span>9:41</span><span>● ▰</span></div><div class="phone-brand">Aislemetry<span>.</span></div><div class="phone-body">${screens[screen]}</div><div class="phone-bottom"><span>Discover</span><span>My tasks</span><span>Wallet</span></div><span class="phone-demo">ILLUSTRATIVE APP / ${screen.toUpperCase()}</span></div>`;
+}
+
+export function faq(items) { return `<div class="faq-list">${items.map(([question, answer]) => `<details><summary>${question}<span aria-hidden="true">+</span></summary><p>${answer}</p></details>`).join('')}</div>`; }
+export function disclosure(extra = '') { return `<p class="disclosure"><strong>Product preview.</strong> Aislemetry is an envisioned India-first retail observation network. All stores, detections, prices, earnings, assignments and dashboard figures shown here are fictional. ${extra}</p>`; }
+export function cta(title = 'Bring a better question.<br><em>Build a sharper pilot.</em>', text = 'Define the stores, evidence, and decisions that matter to your team.') { return `<section class="closing section-width"><div class="eyebrow">FROM THE SHELF TO YOUR NEXT MOVE</div><h2>${title}</h2><div class="closing-bottom"><p>${text}</p>${link('Design your pilot', '/pilot', true)}</div></section>`; }

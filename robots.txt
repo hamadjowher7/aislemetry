@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://hamadjowher7.github.io/aislemetry/sitemap.xml

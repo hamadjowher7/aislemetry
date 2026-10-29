@@ -1,0 +1,7 @@
+GSAP 3.13.0
+Copyright 2025 GreenSock. All rights reserved.
+https://gsap.com
+Licence: https://gsap.com/standard-license/
+Source: https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js
+
+The original copyright and licence header is retained in gsap.min.js.
